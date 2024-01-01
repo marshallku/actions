@@ -1,0 +1,13 @@
+name: Check spelling
+description: Check spelling in files
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        check-latest: true
+        registry-url: https://registry.npmjs.org/
+    - run: npx cspell --no-progress '**/*'
+      shell: bash
