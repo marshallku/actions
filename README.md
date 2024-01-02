@@ -63,3 +63,8 @@ steps:
   - uses: actions/checkout@v4
   - uses: marshallku/actions/setup-pnpm@master
 ```
+
+**Inputs:**
+
+- `node-version`: Node.js version to use (Optional)
+- `npm-registry`: NPM registry to use (Optional)
