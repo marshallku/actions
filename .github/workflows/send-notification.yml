@@ -3,8 +3,8 @@ name: Send discord notification
 on:
     workflow_call:
         inputs:
-            succeed:
-                description: "Status of job"
+            failed:
+                description: "If workflow failed"
                 required: true
                 type: boolean
             color:
@@ -35,16 +35,16 @@ jobs:
             - name: Make curl request
               shell: bash
               run: |
-                  status=$([ "${{ inputs.succeed }}" == "true" ] && echo 'succeed' || echo 'failed')
+                  status=$([ "${{ inputs.failed }}" == "true" ] && echo 'failed' || echo 'succeed')
 
-                  default_color=$([ "${{ inputs.succeed }}" == "true" ] && echo '5763719' || echo '16007990')
+                  default_color=$([ "${{ inputs.failed }}" == "true" ] && echo '16007990' || echo '5763719')
                   color="${{ inputs.color }}"
 
                   if [ -z "$color" ]; then
                       color="$default_color"
                   fi
 
-                  default_title=$([ "${{ inputs.succeed }}" == "true" ] && echo 'Workflow succeed' || echo 'Workflow failed')
+                  default_title=$([ "${{ inputs.failed }}" == "true" ] && echo 'Workflow failed' || echo 'Workflow succeed')
                   title="${{ inputs.title }}"
 
                   if [ -z "$title" ]; then

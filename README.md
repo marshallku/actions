@@ -34,7 +34,7 @@ jobs:
     if: ${{ failure() }}
     uses: marshallku/actions/.github/workflows/send-notification.yml@master
     with:
-      succeed: ${{ contains(join(needs.*.result, ','), 'false') }}
+      failed: ${{ contains(join(needs.*.result, ','), 'failure') }}
       message: 'Deployment successful'
     secrets:
       url: ${{ secrets.DISCORD_WEBHOOK_URL }}
