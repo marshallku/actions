@@ -27,7 +27,6 @@ This workflow sends a notification to a specified Discord channel when triggered
 **Example usage:**
 
 ```yml
-# In your .github/workflows file
 jobs:
   notify:
     needs: [build]
@@ -47,10 +46,31 @@ This action checks for spelling errors in your project.
 **Example usage:**
 
 ```yml
-# In your .github/workflows file
 steps:
   - uses: actions/checkout@v4
   - uses: marshallku/actions/check-spelling@master
+```
+
+#### check-version
+
+This action checks for version updates in the package.json file.
+
+**Outputs:**
+
+- `version`: Current version in the package.json file; it remains **empty** if no updates have occurred.
+
+**Example usage:**
+
+```yml
+check-version:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: marshallku/workflows/check-version@master
+          id: check-version
+        - run: echo "Version updated to ${VERSION}"
+          env:
+                VERSION: ${{ steps.check-version.outputs.version }}
+          if: ${{ steps.check-version.outputs.version != '' }}
 ```
 
 #### setup-pnpm
@@ -58,7 +78,6 @@ steps:
 Sets up `pnpm` in your workflow and installs dependencies.
 
 ```yml
-# In your .github/workflows file
 steps:
   - uses: actions/checkout@v4
   - uses: marshallku/actions/setup-pnpm@master
