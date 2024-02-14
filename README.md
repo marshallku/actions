@@ -6,6 +6,7 @@ This repository contains a collection of reusable GitHub Actions and Workflows d
 
 - **send-notification**: A workflow to send notifications to a Discord channel.
 - **check-spelling**: An action to check the spelling in your project's documentation or code.
+- **create-tag-release**: An action to create tag and release.
 - **setup-pnpm**: An action for setting up `pnpm` and installing dependencies in your GitHub Actions workflow.
 
 ### Usage
@@ -65,13 +66,33 @@ This action checks for version updates in the package.json file.
 check-version:
     runs-on: ubuntu-latest
     steps:
-        - uses: marshallku/workflows/check-version@master
+        - uses: marshallku/actions/check-version@master
           id: check-version
         - run: echo "Version updated to ${VERSION}"
           env:
                 VERSION: ${{ steps.check-version.outputs.version }}
           if: ${{ steps.check-version.outputs.version != '' }}
 ```
+
+#### create-tag-release
+
+Creates tag and release with given tag name.
+
+```yml
+steps:
+    - uses: marshallku/actions/create-tag-release@master
+      if: ${{ steps.check-version.outputs.version != '' }}
+      with:
+        tag: ${{ steps.check-version.outputs.version }}
+```
+
+**Inputs:**
+
+- `tag`: Name of tag you want to create
+
+**Outputs:**
+
+- `tag-exists`: Whether tag exists
 
 #### setup-pnpm
 
