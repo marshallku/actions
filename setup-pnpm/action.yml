@@ -3,8 +3,8 @@ description: Setting up pnpm and install dependencies
 inputs:
   node-version:
     description: Node.js version to use
-    required: true
-    default: "20"
+    required: false
+    default: "22"
   npm-registry:
     description: NPM registry to use
     required: false
