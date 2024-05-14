@@ -19,7 +19,7 @@ runs:
         registry-url: ${{ inputs.npm-registry }}
     - uses: pnpm/action-setup@v2
       with:
-        version: 8
+        version: 9
         run_install: false
     - run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
       id: pnpm-cache
