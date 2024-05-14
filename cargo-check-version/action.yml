@@ -1,0 +1,22 @@
+name: Check cargo.toml version
+description: Check version in cargo.toml
+outputs:
+    version:
+        description: Version in cargo.toml
+        value: ${{ steps.check-version.outputs.version }}
+runs:
+    using: composite
+    steps:
+        - uses: actions/checkout@v4
+          with:
+              fetch-depth: 0
+        - name: Check version
+          id: check-version
+          shell: bash
+          run: |
+              PREVIOUS_VERSION=$(git show HEAD~1:Cargo.toml | grep version -m 1 | cut -d '"' -f 2)
+              CURRENT_VERSION=$(grep version Cargo.toml -m 1 | cut -d '"' -f 2)
+
+              if [ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]; then
+                  echo "version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+              fi
