@@ -17,9 +17,8 @@ runs:
         node-version: ${{ inputs.node-version }}
         check-latest: true
         registry-url: ${{ inputs.npm-registry }}
-    - uses: pnpm/action-setup@v2
+    - uses: pnpm/action-setup@v4
       with:
-        version: 9
         run_install: false
     - run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
       id: pnpm-cache
