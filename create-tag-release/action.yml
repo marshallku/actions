@@ -1,41 +1,41 @@
 name: Create tag and release
 description: Create tag and release
 inputs:
-  tag:
-    description: Name of tag
-    required: true
+    tag:
+        description: Name of tag
+        required: true
 outputs:
-  tag-exists:
-    description: Whether tag exists
-    value: ${{ steps.create-tag.outputs.tag_exists }}
+    tag-exists:
+        description: Whether tag exists
+        value: ${{ steps.create-tag.outputs.tag_exists }}
 runs:
-  using: composite
-  steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Generate body
-      id: generate-body
-      run: |
-        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-        git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
-        git_logs="${git_logs//$'\n'/$'\n'- }"
-        {
-            echo "body<<$EOF"
-            echo "- $git_logs"
-            echo "$EOF"
-        } >>"$GITHUB_OUTPUT"
-      shell: bash
-    - uses: rickstaa/action-create-tag@v1
-      id: create-tag
-      with:
-        tag: ${{ inputs.tag }}
-        tag_exists_error: true
-        message: ${{ inputs.tag }}
-    - name: Create a GitHub release
-      uses: ncipollo/release-action@v1
-      if: ${{ steps.create-tag.outputs.tag_exists == 'false' }}
-      with:
-        tag: ${{ inputs.tag }}
-        name: ${{ inputs.tag }}
-        body: ${{ steps.generate-body.outputs.body }}
+    using: composite
+    steps:
+        - uses: actions/checkout@v4
+          with:
+              fetch-depth: 0
+        - name: Generate body
+          id: generate-body
+          run: |
+              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+              git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
+              git_logs="${git_logs//$'\n'/$'\n'- }"
+              {
+                  echo "body<<$EOF"
+                  echo "- $git_logs"
+                  echo "$EOF"
+              } >>"$GITHUB_OUTPUT"
+          shell: bash
+        - uses: rickstaa/action-create-tag@v1
+          id: create-tag
+          with:
+              tag: ${{ inputs.tag }}
+              tag_exists_error: true
+              message: ${{ inputs.tag }}
+        - name: Create a GitHub release
+          uses: ncipollo/release-action@v1
+          if: ${{ steps.create-tag.outputs.tag_exists == 'false' }}
+          with:
+              tag: ${{ inputs.tag }}
+              name: ${{ inputs.tag }}
+              body: ${{ steps.generate-body.outputs.body }}
