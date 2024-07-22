@@ -1,14 +1,16 @@
 name: Setup pnpm
 description: Setting up pnpm and install dependencies
+
 inputs:
     node-version:
         description: Node.js version to use
         required: false
-        default: "22"
+        default: "20"
     npm-registry:
         description: NPM registry to use
         required: false
         default: "https://registry.npmjs.org/"
+
 runs:
     using: composite
     steps:
