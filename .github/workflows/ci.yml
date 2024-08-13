@@ -1,0 +1,35 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    test-bash-scripts:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Find and run test script
+              run: |
+                  for test_script in $(find . -name run.sh); do
+                    if [[ $test_script == */tests/run.sh ]]; then
+                      echo "Running test script: $test_script"
+                      bash "$test_script"
+                    fi
+                  done
+    shell-check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Install ShellCheck
+              run: sudo apt-get install shellcheck
+            - name: ShellCheck
+              run: |
+                  for shell_script in $(find . -name '*.sh'); do
+                      echo "Checking script: $shell_script"
+                      shellcheck "$shell_script"
+                  done
