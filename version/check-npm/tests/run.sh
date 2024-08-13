@@ -52,6 +52,8 @@ before_each() {
         FAILED_TESTS=$((FAILED_TESTS + 1))
     fi
     git_command init
+    git_command config user.name github-actions[bot]
+    git_command config user.email 41898282+github-actions[bot]@users.noreply.github.com
     git_command add package.json
     git_command commit -m "Initial commit"
 }
