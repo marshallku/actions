@@ -12,6 +12,10 @@ FAILED_TESTS=0
 export GITHUB_OUTPUT="$TEST_DIR/github_output.txt"
 
 # Utility functions
+git_command() {
+    git "$@" >/dev/null 2>&1
+}
+
 run_check() {
     bash "$SCRIPT_DIR/scripts/check-version.sh"
 }
@@ -19,8 +23,8 @@ run_check() {
 update_version() {
     local new_version="$1"
     jq ".version = \"$new_version\"" "$PACKAGE_DIR/package.json" >tmp.json && mv tmp.json "$PACKAGE_DIR/package.json"
-    git add package.json
-    git commit -m "Update version" || true
+    git_command add package.json
+    git_command commit -m "Update version" || true
 }
 
 assert_version() {
@@ -47,9 +51,9 @@ before_each() {
         echo "Error: Version not set correctly in before_each"
         FAILED_TESTS=$((FAILED_TESTS + 1))
     fi
-    git init
-    git add package.json
-    git commit -m "Initial commit"
+    git_command init
+    git_command add package.json
+    git_command commit -m "Initial commit"
 }
 
 after_each() {
@@ -70,8 +74,8 @@ after_all() {
 test_no_version_change() {
     before_each
     echo "DUMMY" >dummy.txt
-    git add dummy.txt
-    git commit -m "Dummy commit"
+    git_command add dummy.txt
+    git_command commit -m "Dummy commit"
     run_check
     assert_version "version="
     rm -f dummy.txt
