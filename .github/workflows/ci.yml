@@ -14,11 +14,11 @@ jobs:
               uses: actions/checkout@v4
             - name: Find and run test script
               run: |
-                  for test_script in $(find . -name run.sh); do
-                    if [[ $test_script == */tests/run.sh ]]; then
-                      echo "Running test script: $test_script"
-                      bash "$test_script"
-                    fi
+                  find . -name run.sh | while read -r test_script; do
+                      if [[ $test_script == */tests/run.sh ]]; then
+                          echo "Running test script: $test_script"
+                          bash "$test_script"
+                      fi
                   done
     shell-check:
         runs-on: ubuntu-latest
