@@ -1,13 +1,16 @@
 name: Create tag and release
 description: Create tag and release
+
 inputs:
     tag:
         description: Name of tag
         required: true
+
 outputs:
     tag-exists:
         description: Whether tag exists
         value: ${{ steps.create-tag.outputs.tag_exists }}
+
 runs:
     using: composite
     steps:

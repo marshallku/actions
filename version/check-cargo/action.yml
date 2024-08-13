@@ -1,9 +1,11 @@
 name: Check cargo.toml version
 description: Check version in cargo.toml
+
 outputs:
     version:
         description: Version in cargo.toml
         value: ${{ steps.check-version.outputs.version }}
+
 runs:
     using: composite
     steps:

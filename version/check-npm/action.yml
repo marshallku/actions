@@ -1,9 +1,11 @@
 name: Check package.json version
 description: Check version in package.json
+
 outputs:
     version:
         description: Version in package.json
         value: ${{ steps.check-version.outputs.version }}
+
 runs:
     using: composite
     steps:

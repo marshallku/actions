@@ -1,5 +1,6 @@
 name: Check spelling
 description: Check spelling in files
+
 runs:
     using: composite
     steps:
